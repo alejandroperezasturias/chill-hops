@@ -209,7 +209,7 @@ section {
 	transition: 300ms all ease-in-out;
 }
 .animate-player {
-	transform: translateX(10%) scale(0.95);
+	transform: translateX(14%) scale(0.95);
 }
 
 /* song-thumbnail */

@@ -16,7 +16,7 @@ export default function SongThumbnail({ song, index, highLightSelectedSong }) {
 				}
 			>
 				<div className={'song-image'}>
-					<img className={''} src={song.cover}></img>
+					<img className={'vynil'} src={song.cover}></img>
 				</div>
 				<div className="song-info flow-content flow-content--small">
 					<h1>{highLightSelectedSong ? 'Now Playing' : ''}</h1>

@@ -28,16 +28,19 @@ function App() {
 	useEffect(() => {
 		let songSkipping = songs;
 		songSkipping = songSkipping.map((song, index) => {
-			if (index === 0) {
-				return {
-					...song,
-					previousSong: songSkipping.length - 1,
-					nextSong: 1,
-				};
-			} else if (index === songSkipping.length - 1) {
-				return { ...song, previousSong: index - 1, nextSong: 0 };
-			} else {
-				return { ...song, previousSong: index - 1, nextSong: index + 1 };
+			switch (index) {
+				case 0:
+					return {
+						...song,
+						previousSong: songSkipping.length - 1,
+						nextSong: 1,
+					};
+					break;
+				case songSkipping.length - 1:
+					return { ...song, previousSong: index - 1, nextSong: 0 };
+					break;
+				default:
+					return { ...song, previousSong: index - 1, nextSong: index + 1 };
 			}
 		});
 		setSongs(songSkipping);
