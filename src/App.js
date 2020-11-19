@@ -18,11 +18,30 @@ function App() {
 	const [nextSong, setNextSong] = useState(1);
 	const [beforeSong, setBeforeSong] = useState(5);
 	const [toogleSideBar, setToogleSideBar] = useState(false);
-	const [highLightSelectedSong, setHighLightSelectedSong] = useState(false);
 
 	const nowPLaying = songs[playedSong];
 	const nextPlaying = songs[nextSong];
 	const beforePlaying = songs[beforeSong];
+
+	// Facilitate sound skipping
+	// Facilitate Plug & Play New Songs to our list
+	useEffect(() => {
+		let songSkipping = songs;
+		songSkipping = songSkipping.map((song, index) => {
+			if (index === 0) {
+				return {
+					...song,
+					previousSong: songSkipping.length - 1,
+					nextSong: 1,
+				};
+			} else if (index === songSkipping.length - 1) {
+				return { ...song, previousSong: index - 1, nextSong: 0 };
+			} else {
+				return { ...song, previousSong: index - 1, nextSong: index + 1 };
+			}
+		});
+		setSongs(songSkipping);
+	}, []);
 
 	// Play Music
 	useEffect(() => {
@@ -37,68 +56,49 @@ function App() {
 	// Pick song from list
 	function handleChooseSong(id, index) {
 		songs[playedSong].audio.pause();
+		// Adjust Now Playing Song
 		setPlayedSong(songs.findIndex((song) => song.id === id));
-
-		if (playedSong === index) {
-			setHighLightSelectedSong(!highLightSelectedSong);
-		}
+		// Adjust Next Song Thumbnail
+		setNextSong(() => {
+			return songs.find((song) => song.id === id).nextSong;
+		});
+		// Adjust Previous Song Thumbnail
+		setBeforeSong(() => {
+			return songs.find((song) => song.id === id).previousSong;
+		});
 	}
-
-	//  Refactor these lines of code using the % operator
 
 	// Skip Forward
 	const handleSkipForward = async () => {
 		songs[playedSong].audio.pause();
-		await setPlayedSong((currentSong) => {
-			return (currentSong + 1) % songs.length;
+		// Adjust Now Playing Song
+		await setPlayedSong(() => {
+			return nowPLaying.nextSong;
 		});
+		// Adjust Next Song Thumbnail
 		setNextSong((currentNextSong) => {
-			return (currentNextSong + 1) % songs.length;
+			return songs[currentNextSong].nextSong;
 		});
+		// Adjust Previous Song Thumbnail
 		setBeforeSong((currentBeforeSong) => {
-			return (currentBeforeSong + 1) % songs.length;
+			return songs[currentBeforeSong].nextSong;
 		});
 	};
-
-	useEffect(() => {
-		console.log(6 % 6);
-		console.log(
-			`My number is ${playedSong} modulus by ${songs.length} and we get ${
-				playedSong % songs.length
-			}`
-		);
-	}, [playedSong]);
 
 	// Skip Backwards
 	const handleSkipBack = async () => {
 		songs[playedSong].audio.pause();
-
-		if (
-			(playedSong - 1) % songs.length === -1 ||
-			(beforeSong - 1) % songs.length === -1
-		) {
-			await setPlayedSong(() => {
-				return songs.length - 1;
-			});
-
-			setBeforeSong(() => {
-				return songs.length - 2;
-			});
-
-			setNextSong(0);
-
-			return;
-		}
-		await setPlayedSong((currentSong) => {
-			return currentSong - 1;
+		// Adjust the current song
+		await setPlayedSong(() => {
+			return nowPLaying.previousSong;
 		});
-
-		setBeforeSong((beforeSong) => {
-			return beforeSong - 1;
+		// Adjust Next Song Thumbnail
+		setNextSong((currentNextSong) => {
+			return songs[currentNextSong].previousSong;
 		});
-
-		setNextSong(() => {
-			return beforeSong + 1;
+		// Adjust Previous Song Thumbnail
+		setBeforeSong((currentBeforeSong) => {
+			return songs[currentBeforeSong].previousSong;
 		});
 	};
 
@@ -112,7 +112,6 @@ function App() {
 		setToogleSideBar,
 		toogleSideBar,
 		handleChooseSong,
-		highLightSelectedSong,
 		handleSkipBack,
 		nextPlaying,
 		beforePlaying,
