@@ -3,10 +3,13 @@ import { MusicContext } from '../App.js';
 import SongThumbnail from './SongThumbnail';
 
 export default function SongList({}) {
-	const { songs, toogleSideBar, setToogleSideBar, playedSong } = useContext(
-		MusicContext
-	);
-
+	const {
+		songs,
+		toogleSideBar,
+		setToogleSideBar,
+		playedSong,
+		playing,
+	} = useContext(MusicContext);
 	return (
 		<section
 			className={
@@ -28,6 +31,7 @@ export default function SongList({}) {
 								song={song}
 								index={index}
 								highLightSelectedSong={true}
+								spingTheSong={playing ? true : false}
 							/>
 						);
 					} else {
@@ -37,6 +41,7 @@ export default function SongList({}) {
 								song={song}
 								index={index}
 								highLightSelectedSong={false}
+								spingTheSong={false}
 							/>
 						);
 					}

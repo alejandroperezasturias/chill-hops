@@ -261,6 +261,12 @@ section {
 	-moz-animation: spin 18s linear infinite;
 	animation: spin 18s linear infinite;
 }
+
+.spin.spin-faster {
+	-webkit-animation: spin 10s linear infinite;
+	-moz-animation: spin 10s linear infinite;
+	animation: spin 10s linear infinite;
+}
 /* Nav */
 
 .nav {
@@ -282,10 +288,15 @@ section {
 
 /* Time Control */
 
-.time-control > input {
+input {
 	width: 100%;
 	flex-basis: auto;
 	flex-grow: 1;
+	cursor: pointer;
+}
+
+input[type='range']:focus {
+	outline: none;
 }
 
 /* Animations */

@@ -16,6 +16,7 @@ export default function Player() {
 		handleSkipBack,
 		playedSong,
 		songs,
+
 	} = useContext(MusicContext);
 
 	const [time, setTime] = useState({
@@ -44,7 +45,7 @@ export default function Player() {
 		songs[playedSong].audio.addEventListener('ended', (e) => {
 			handleSkipForward()
 		});
-	}, [playedSong]);
+	}, [playedSong, songs]);
 
 	const getTime = (x) => {
 		return Math.floor(x / 60) + ':' + ('0' + Math.floor(x % 60)).slice(-2);

@@ -35,10 +35,9 @@ function App() {
 						previousSong: songSkipping.length - 1,
 						nextSong: 1,
 					};
-					break;
 				case songSkipping.length - 1:
 					return { ...song, previousSong: index - 1, nextSong: 0 };
-					break;
+
 				default:
 					return { ...song, previousSong: index - 1, nextSong: index + 1 };
 			}

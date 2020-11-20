@@ -1,8 +1,13 @@
 import { useContext } from 'react';
 import { MusicContext } from '../App.js';
 
-export default function SongThumbnail({ song, index, highLightSelectedSong }) {
-	const { handleChooseSong } = useContext(MusicContext);
+export default function SongThumbnail({
+	song,
+	index,
+	highLightSelectedSong,
+	spingTheSong,
+}) {
+	const { handleChooseSong, playing } = useContext(MusicContext);
 	return (
 		<section>
 			<div
@@ -16,7 +21,10 @@ export default function SongThumbnail({ song, index, highLightSelectedSong }) {
 				}
 			>
 				<div className={'song-image'}>
-					<img className={'vynil'} src={song.cover}></img>
+					<img
+						className={spingTheSong ? 'vynil spin' : 'vynil'}
+						src={song.cover}
+					></img>
 				</div>
 				<div className="song-info flow-content flow-content--small">
 					<h1>{highLightSelectedSong ? 'Now Playing' : ''}</h1>
